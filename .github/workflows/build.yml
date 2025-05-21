@@ -13,13 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Run Buildozer in Docker
+      - name: Build with official kivy/buildozer Docker image
         uses: addnab/docker-run-action@v3
         with:
-          image: hostingenv/buildozer
+          image: kivy/buildozer
           options: -v ${{ github.workspace }}:/app
           run: |
             cd /app
