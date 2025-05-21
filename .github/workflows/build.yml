@@ -8,16 +8,22 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: cclauss/buildozer
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Build APK
-        run: |
-          buildozer android debug
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Run Buildozer in Docker
+        uses: addnab/docker-run-action@v3
+        with:
+          image: hostingenv/buildozer
+          options: -v ${{ github.workspace }}:/app
+          run: |
+            cd /app
+            buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
